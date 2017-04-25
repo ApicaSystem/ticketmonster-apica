@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import javax.ejb.Stateless;
+import javax.enterprise.event.Event;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.OptimisticLockException;
@@ -40,6 +41,9 @@ public class BookingEndpoint
    @PersistenceContext(unitName = "primary")
    private EntityManager em;
 
+   SeatAllocationService seatAllocationService;
+   private Event<Booking> cancelledBookingEvent;
+   
    @POST
    @Consumes("application/json")
    public Response create(BookingDTO dto)
@@ -53,26 +57,29 @@ public class BookingEndpoint
    @Path("/{id:[0-9][0-9]*}")
    public Response deleteById(@PathParam("id") Long id)
    {
-	    SeatAllocationService seatAllocationService = null;
 
-      Booking entity = em.find(Booking.class, id);
-      if (entity == null)
-      {
-         return Response.status(Status.NOT_FOUND).build();
-      }
-      
-      
       Booking booking = em.find(Booking.class, id);
+      
+      if (booking == null) {
+          return Response.status(Response.Status.NOT_FOUND).build();
+      }
+      em.remove(booking);
+      // Group together seats by section so that we can deallocate them in a group
       Map<Section, List<Seat>> seatsBySection = new TreeMap<Section, java.util.List<Seat>>(SectionComparator.instance());
-
       for (Ticket ticket : booking.getTickets()) {
           List<Seat> seats = seatsBySection.get(ticket.getSeat().getSection());
-
-    	    seatAllocationService.deallocateSeats( ticket.getSeat().getSection(),
-                  booking.getPerformance(), seats);
+          if (seats == null) {
+              seats = new ArrayList<Seat>();
+              seatsBySection.put(ticket.getSeat().getSection(), seats);
+          }
+          seats.add(ticket.getSeat());
       }
-      em.remove(entity);
-
+      // Deallocate each section block
+      for (Map.Entry<Section, List<Seat>> sectionListEntry : seatsBySection.entrySet()) {
+          seatAllocationService.deallocateSeats( sectionListEntry.getKey(),
+                  booking.getPerformance(), sectionListEntry.getValue());
+      }
+      cancelledBookingEvent.fire(booking);
       return Response.noContent().build();
    }
 
