@@ -13,7 +13,7 @@ define([
                     templateUrl: 'resources/js/app/booking/booking.html',
                     controller: 'BookingController'
                 })
-                .when('/bookings', {
+                .when('/forge/bookings', {
                     templateUrl: 'resources/js/app/booking/booking-list.html',
                     controller: 'BookingListController'
                 })
