@@ -34,7 +34,7 @@ define([
             return resource;
         })
         .factory('BookingResource', function ($resource) {
-            var resource = $resource(config.baseUrl + 'rest/bookings/:bookingId', {bookingId: '@id'}, {
+            var resource = $resource(config.baseUrl + 'rest/forge/bookings/:bookingId', {bookingId: '@id'}, {
                 'queryAll': {
                     method: 'GET',
                     isArray: true
