@@ -295,7 +295,10 @@ public class SectionAllocation implements Serializable {
     public void deallocate(Seat seat) {
        
         this.allocated[seat.getRowNumber()-1][seat.getNumber()-1] = 0;
+        if (occupiedCount >= 2){
         occupiedCount = occupiedCount -2;
+        }
+        
     }
 
     /* Boilerplate getters and setters */
