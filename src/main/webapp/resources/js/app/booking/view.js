@@ -124,7 +124,7 @@ define([
 
             $scope.displayView = true;
         }])
-        .controller('TicketsController', ['$scope', '$routeParams', '$location', 'BookingService', 'ShowResource', 'BookingResource', function($scope, $routeParams, $location, BookingService, ShowResource, BookingResource) {
+        .controller('TicketsController', ['$scope', '$routeParams', '$location', 'BookingService', 'ShowResource', 'BookingResource', 'BookingResource2', function($scope, $routeParams, $location, BookingService, ShowResource, BookingResource, BookingResource2) {
             console.log("In Tickets View");
 
             $scope.show = $scope.show || {};
@@ -174,7 +174,7 @@ define([
                 $scope.toggleView();
             };
         }])
-        .controller('CheckoutController', ['$scope', '$routeParams', '$location', 'BookingService', 'ShowResource', 'BookingResource', function($scope, $routeParams, $location, BookingService, ShowResource, BookingResource) {
+        .controller('CheckoutController', ['$scope', '$routeParams', '$location', 'BookingService', 'ShowResource', 'BookingResource', 'BookingResource2', function($scope, $routeParams, $location, BookingService, ShowResource, BookingResource, BookingResource2) {
             console.log("In Booking View");
 
             $scope.performance = $scope.performance || {};
@@ -213,7 +213,7 @@ define([
                 });
             };
         }])
-        .controller('BookingDetailController', ['$scope', '$routeParams', '$location', 'BookingResource', 'PerformanceDetailsResource', function($scope, $routeParams, $location, BookingResource, PerformanceDetailsResource) {
+        .controller('BookingDetailController', ['$scope', '$routeParams', '$location', 'BookingResource', 'BookingResource2', 'PerformanceDetailsResource', function($scope, $routeParams, $location, BookingResource, BookingResource2, PerformanceDetailsResource) {
 
             var displayBooking = function() {
                 BookingResource.query({bookingId:$routeParams.bookingId}, function(data) {
@@ -226,7 +226,7 @@ define([
 
             displayBooking();
         }])
-        .controller('BookingListController', ['$scope', '$routeParams', '$location', 'BookingResource', 'PerformanceDetailsResource', function($scope, $routeParams, $location, BookingResource, PerformanceDetailsResource) {
+        .controller('BookingListController', ['$scope', '$routeParams', '$location', 'BookingResource','BookingResource', 'PerformanceDetailsResource', function($scope, $routeParams, $location, BookingResource, BookingResource2, PerformanceDetailsResource) {
 
             $scope.itemsPerPage = 10;
             $scope.currentPage = 1;
@@ -296,7 +296,7 @@ define([
 
             $scope.deleteBooking = function(id) {
                 if (confirm("Are you sure you want to delete booking " + id)) {
-                    BookingResource.delete({bookingId:id}, function() {
+                    BookingResource2.delete({bookingId:id}, function() {
                         $scope.displayBookings();
                     }, function() {
                         console.log("Failure");
