@@ -2,11 +2,8 @@ package org.jboss.examples.ticketmonster.rest;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import javax.ejb.Stateless;
-import javax.enterprise.event.Event;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.OptimisticLockException;
@@ -25,10 +22,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
 import org.jboss.examples.ticketmonster.rest.dto.BookingDTO;
-import org.jboss.examples.ticketmonster.service.SeatAllocationService;
 import org.jboss.examples.ticketmonster.model.Booking;
-import org.jboss.examples.ticketmonster.model.Seat;
-import org.jboss.examples.ticketmonster.model.Section;
 import org.jboss.examples.ticketmonster.model.Ticket;
 
 /**
@@ -41,9 +35,6 @@ public class BookingEndpoint
    @PersistenceContext(unitName = "primary")
    private EntityManager em;
 
-   SeatAllocationService seatAllocationService;
-   private Event<Booking> cancelledBookingEvent;
-   
    @POST
    @Consumes("application/json")
    public Response create(BookingDTO dto)
@@ -57,29 +48,21 @@ public class BookingEndpoint
    @Path("/{id:[0-9][0-9]*}")
    public Response deleteById(@PathParam("id") Long id)
    {
-
-      Booking booking = em.find(Booking.class, id);
+      Booking entity = em.find(Booking.class, id);
+      if (entity == null)
+      {
+         return Response.status(Status.NOT_FOUND).build();
+      }
       
-      if (booking == null) {
-          return Response.status(Response.Status.NOT_FOUND).build();
+      for (Ticket ticket : entity.getTickets()){
+    	  SectionAllocationEndpoint sa = new SectionAllocationEndpoint ();
+          sa.deleteById(ticket.getSeat().getSection().getId());
       }
-      em.remove(booking);
-      // Group together seats by section so that we can deallocate them in a group
-      Map<Section, List<Seat>> seatsBySection = new TreeMap<Section, java.util.List<Seat>>(SectionComparator.instance());
-      for (Ticket ticket : booking.getTickets()) {
-          List<Seat> seats = seatsBySection.get(ticket.getSeat().getSection());
-          if (seats == null) {
-              seats = new ArrayList<Seat>();
-              seatsBySection.put(ticket.getSeat().getSection(), seats);
-          }
-          seats.add(ticket.getSeat());
-      }
-      // Deallocate each section block
-      for (Map.Entry<Section, List<Seat>> sectionListEntry : seatsBySection.entrySet()) {
-          seatAllocationService.deallocateSeats( sectionListEntry.getKey(),
-                  booking.getPerformance(), sectionListEntry.getValue());
-      }
-      cancelledBookingEvent.fire(booking);
+      em.remove(entity);
+      
+      
+      
+      
       return Response.noContent().build();
    }
 
