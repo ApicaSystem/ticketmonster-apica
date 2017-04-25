@@ -226,7 +226,7 @@ define([
 
             displayBooking();
         }])
-        .controller('BookingListController', ['$scope', '$routeParams', '$location', 'BookingResource','BookingResource', 'PerformanceDetailsResource', function($scope, $routeParams, $location, BookingResource, BookingResource2, PerformanceDetailsResource) {
+        .controller('BookingListController', ['$scope', '$routeParams', '$location', 'BookingResource','BookingResource2', 'PerformanceDetailsResource', function($scope, $routeParams, $location, BookingResource, BookingResource2, PerformanceDetailsResource) {
 
             $scope.itemsPerPage = 10;
             $scope.currentPage = 1;
