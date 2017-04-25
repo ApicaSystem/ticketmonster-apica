@@ -61,9 +61,9 @@ public class SectionAllocation implements Serializable {
      * warnings the java compiler gives us about not using the field!
      * </p>
      */
-    @SuppressWarnings("unused")
-    @Version
-    private long version;
+    //@SuppressWarnings("unused")
+    //@Version
+    //private long version;
 
     /**
      * <p>
