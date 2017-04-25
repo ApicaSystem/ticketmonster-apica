@@ -23,7 +23,6 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
 import org.jboss.examples.ticketmonster.rest.dto.BookingDTO;
 import org.jboss.examples.ticketmonster.model.Booking;
-import org.jboss.examples.ticketmonster.model.Ticket;
 
 /**
  * 
@@ -53,16 +52,7 @@ public class BookingEndpoint
       {
          return Response.status(Status.NOT_FOUND).build();
       }
-      
-      for (Ticket ticket : entity.getTickets()){
-    	  SectionAllocationEndpoint sa = new SectionAllocationEndpoint ();
-          sa.deleteById(ticket.getSeat().getSection().getId());
-      }
       em.remove(entity);
-      
-      
-      
-      
       return Response.noContent().build();
    }
 
