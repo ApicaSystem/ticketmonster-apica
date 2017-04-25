@@ -2,6 +2,8 @@ package org.jboss.examples.ticketmonster.rest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -22,7 +24,11 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
 import org.jboss.examples.ticketmonster.rest.dto.BookingDTO;
+import org.jboss.examples.ticketmonster.service.SeatAllocationService;
 import org.jboss.examples.ticketmonster.model.Booking;
+import org.jboss.examples.ticketmonster.model.Seat;
+import org.jboss.examples.ticketmonster.model.Section;
+import org.jboss.examples.ticketmonster.model.Ticket;
 
 /**
  * 
@@ -47,12 +53,26 @@ public class BookingEndpoint
    @Path("/{id:[0-9][0-9]*}")
    public Response deleteById(@PathParam("id") Long id)
    {
+	    SeatAllocationService seatAllocationService = null;
+
       Booking entity = em.find(Booking.class, id);
       if (entity == null)
       {
          return Response.status(Status.NOT_FOUND).build();
       }
+      
+      
+      Booking booking = em.find(Booking.class, id);
+      Map<Section, List<Seat>> seatsBySection = new TreeMap<Section, java.util.List<Seat>>(SectionComparator.instance());
+
+      for (Ticket ticket : booking.getTickets()) {
+          List<Seat> seats = seatsBySection.get(ticket.getSeat().getSection());
+
+    	    seatAllocationService.deallocateSeats( ticket.getSeat().getSection(),
+                  booking.getPerformance(), seats);
+      }
       em.remove(entity);
+
       return Response.noContent().build();
    }
 
