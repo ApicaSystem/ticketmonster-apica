@@ -126,7 +126,7 @@ public class SectionAllocationEndpoint
       }
       catch (OptimisticLockException e)
       {
-         continue;
+         return Response.status(Response.Status.CONFLICT).entity(e.getEntity()).build();
       }
       return Response.noContent().build();
    }
