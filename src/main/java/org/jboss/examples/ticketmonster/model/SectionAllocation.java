@@ -298,6 +298,9 @@ public class SectionAllocation implements Serializable {
         if (occupiedCount >= 2){
         occupiedCount = occupiedCount -2;
         }
+        else if (occupiedCount == 1){
+            occupiedCount--;
+        }
         
     }
 
