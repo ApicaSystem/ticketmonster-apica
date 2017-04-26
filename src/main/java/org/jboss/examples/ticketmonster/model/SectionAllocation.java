@@ -61,9 +61,9 @@ public class SectionAllocation implements Serializable {
      * warnings the java compiler gives us about not using the field!
      * </p>
      */
-    //@SuppressWarnings("unused")
-    //@Version
-    //private long version;
+    @SuppressWarnings("unused")
+    @Version
+    private long version;
 
     /**
      * <p>
@@ -293,15 +293,11 @@ public class SectionAllocation implements Serializable {
      * @param seat the seats that need to be deallocated
      */
     public void deallocate(Seat seat) {
-       
+        if (!isAllocated(seat)) {
+            throw new SeatAllocationException("Trying to deallocate an unallocated seat!");
+        }
         this.allocated[seat.getRowNumber()-1][seat.getNumber()-1] = 0;
-        if (occupiedCount >= 2){
-        occupiedCount = occupiedCount -2;
-        }
-        else if (occupiedCount == 1){
-            occupiedCount--;
-        }
-        
+        occupiedCount --;
     }
 
     /* Boilerplate getters and setters */
