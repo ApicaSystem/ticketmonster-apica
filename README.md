@@ -4,7 +4,7 @@ TicketMonster is an online ticketing demo application that gets you started with
 
 Here are a few instructions for building and running it. You can learn more about the example from the [tutorial](http://www.jboss.org/ticket-monster).
 
-## Updating the Performance dates.
+## Updating the Performance dates
 
 _NOTE: This step is optional.. It is necessary only if you want to update the dates of the Performances in the `import.sql` script in an automated manner. Updating the performance dates ensure that they are always set to some timestamp in the future, and ensures that all performances are visible in the Monitor section of the TicketMonster application._
 
