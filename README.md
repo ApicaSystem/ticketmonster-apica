@@ -1,4 +1,4 @@
-# TicketMonster - a JBoss example
+# TicketMonster - a JBoss example.
 
 TicketMonster is an online ticketing demo application that gets you started with JBoss technologies, and helps you learn and evaluate them.
 
