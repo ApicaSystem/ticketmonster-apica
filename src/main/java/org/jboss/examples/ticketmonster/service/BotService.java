@@ -78,9 +78,9 @@ public class BotService {
 
     public void deleteAll() {
     	
-    	em.createQuery("delete from Ticket where id != 0", Ticket.class);
-		em.createQuery("delete from Booking where createdOn != 0", Booking.class);
-		em.createQuery("DELETE FROM SectionAllocation WHERE occupiedCount != 0", SectionAllocation.class);
+    	em.createQuery("delete from Ticket where id != 0");
+		em.createQuery("delete from Booking where createdOn != 0");
+		em.createQuery("DELETE FROM SectionAllocation WHERE occupiedCount != 0");
 		event.fire("Deleted Bookings");
     }
 
