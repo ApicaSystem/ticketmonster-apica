@@ -4,7 +4,7 @@ import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
 /**
- * A class extending {@link Application} and annotated with @ApplicationPath is the Java EE 6
+ * A class extending {@link Application} and annotated with @ApplicationPath is the Java EE
  * "no XML" approach to activating JAX-RS.
  * 
  * <p>
