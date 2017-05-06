@@ -1,5 +1,5 @@
 
-angular.module('ticketmonster').controller('NewSectionAllocationController', function ($scope, $location, locationParser, flash, SectionAllocationResource , PerformanceResource, SectionResource) {
+angular.module('ticketmonster').controller('NewSectionAllocationController', function ($scope, $location, locationParser, SectionAllocationResource , PerformanceResource, SectionResource) {
     $scope.disabled = false;
     $scope.$location = $location;
     $scope.sectionAllocation = $scope.sectionAllocation || {};
@@ -38,15 +38,11 @@ angular.module('ticketmonster').controller('NewSectionAllocationController', fun
     $scope.save = function() {
         var successCallback = function(data,responseHeaders){
             var id = locationParser(responseHeaders);
-            flash.setMessage({'type':'success','text':'The sectionAllocation was created successfully.'});
-            $location.path('/SectionAllocations');
+            $location.path('/SectionAllocations/edit/' + id);
+            $scope.displayError = false;
         };
-        var errorCallback = function(response) {
-            if(response && response.data && response.data.message) {
-                flash.setMessage({'type': 'error', 'text': response.data.message}, true);
-            } else {
-                flash.setMessage({'type': 'error', 'text': 'Something broke. Retry, or cancel and start afresh.'}, true);
-            }
+        var errorCallback = function() {
+            $scope.displayError = true;
         };
         SectionAllocationResource.save($scope.sectionAllocation, successCallback, errorCallback);
     };

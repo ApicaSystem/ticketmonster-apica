@@ -1,6 +1,6 @@
 
 
-angular.module('ticketmonster').controller('EditVenueController', function($scope, $routeParams, $location, flash, VenueResource , MediaItemResource, SectionResource) {
+angular.module('ticketmonster').controller('EditVenueController', function($scope, $routeParams, $location, VenueResource , MediaItemResource, SectionResource) {
     var self = this;
     $scope.disabled = false;
     $scope.$location = $location;
@@ -49,7 +49,6 @@ angular.module('ticketmonster').controller('EditVenueController', function($scop
             });
         };
         var errorCallback = function() {
-            flash.setMessage({'type': 'error', 'text': 'The venue could not be found.'});
             $location.path("/Venues");
         };
         VenueResource.get({VenueId:$routeParams.VenueId}, successCallback, errorCallback);
@@ -61,15 +60,11 @@ angular.module('ticketmonster').controller('EditVenueController', function($scop
 
     $scope.save = function() {
         var successCallback = function(){
-            flash.setMessage({'type':'success','text':'The venue was updated successfully.'}, true);
             $scope.get();
+            $scope.displayError = false;
         };
-        var errorCallback = function(response) {
-            if(response && response.data && response.data.message) {
-                flash.setMessage({'type': 'error', 'text': response.data.message}, true);
-            } else {
-                flash.setMessage({'type': 'error', 'text': 'Something broke. Retry, or cancel and start afresh.'}, true);
-            }
+        var errorCallback = function() {
+            $scope.displayError=true;
         };
         $scope.venue.$update(successCallback, errorCallback);
     };
@@ -80,15 +75,11 @@ angular.module('ticketmonster').controller('EditVenueController', function($scop
 
     $scope.remove = function() {
         var successCallback = function() {
-            flash.setMessage({'type': 'error', 'text': 'The venue was deleted.'});
             $location.path("/Venues");
+            $scope.displayError = false;
         };
-        var errorCallback = function(response) {
-            if(response && response.data && response.data.message) {
-                flash.setMessage({'type': 'error', 'text': response.data.message}, true);
-            } else {
-                flash.setMessage({'type': 'error', 'text': 'Something broke. Retry, or cancel and start afresh.'}, true);
-            }
+        var errorCallback = function() {
+            $scope.displayError=true;
         }; 
         $scope.venue.$remove(successCallback, errorCallback);
     };

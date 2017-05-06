@@ -17,7 +17,7 @@ require(['../../../cordova'], function() {
                 parseFloat(window.device.version) >= 7.0) {
                 StatusBar.overlaysWebView(false);
                 StatusBar.styleDefault();
-                StatusBar.backgroundColorByHexString("#ccc");
+                StatusBar.backgroundColorByHexString("#e9e9e9");
             }
             // Load the mobile module
             require (["mobile"]);

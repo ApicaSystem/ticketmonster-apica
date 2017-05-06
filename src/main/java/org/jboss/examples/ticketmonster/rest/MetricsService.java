@@ -1,6 +1,9 @@
 package org.jboss.examples.ticketmonster.rest;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -63,7 +66,7 @@ public class MetricsService {
 
     private List<Show> retrieveShows() {
         TypedQuery<Show> showQuery = entityManager
-            .createQuery("select DISTINCT s from Show s JOIN s.performances p", Show.class);
+            .createQuery("select DISTINCT s from Show s JOIN s.performances p WHERE p.date > current_timestamp", Show.class);
         return showQuery.getResultList();
     }
 
@@ -72,7 +75,7 @@ public class MetricsService {
 
         Query occupiedCountsQuery = entityManager
             .createQuery("select b.performance.id, SIZE(b.tickets) from Booking b "
-                + "GROUP BY b.performance.id");
+                + "WHERE b.performance.date > current_timestamp GROUP BY b.performance.id");
 
         List<Object[]> results = occupiedCountsQuery.getResultList();
         for (Object[] result : results) {

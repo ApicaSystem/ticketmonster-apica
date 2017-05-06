@@ -9,28 +9,11 @@ body {
     background: url(../img/bg.png) repeat 0 0 #CCC;
 }
 
-@media (max-width: 767px) {
-    body {
-        background: #5f5f5f;
-    }
-}
-
 footer {
     clear: both;
     text-align: center;
     color: #666666;
     font-size: 0.85em;
-}
-
-.mobile-footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    margin: 0;
-    width: 100%;
-    clear: both;
-    height: 60px;
-    background: #CCC;
 }
 
 a {
@@ -118,9 +101,7 @@ footer {
 .btn-primary:active,
 .btn-primary.active,
 .btn-primary.disabled,
-.btn-primary[disabled],
-.btn-primary.disabled:hover,
-.btn-primary[disabled]:hover {
+.btn-primary[disabled] {
     background-color: #e24f4d;
     border: 1px solid #ac2925;
 }
@@ -171,12 +152,6 @@ footer {
     width: auto;
 }
 
-@media (max-width: 767px) {
-    #container {
-        background: #5f5f5f;
-    }
-}
-
 #menu {
     width: auto;
     margin: 0 auto;
@@ -193,7 +168,7 @@ footer {
 }
 
 #content {
-    padding-bottom: 60px;
+    padding-bottom: 30px;
 }
 
 /* Navbar */
@@ -220,13 +195,17 @@ footer {
     border: 1px solid;
 }
 
+#navbar-items {
+    /* Remove the scrollbars from the expanded menu */
+    overflow: visible;
+}
+
 /* Left Column */
 #itemMenu {
     background-color: #c9c7c7;
     /* Removes the box-shadow from IE due to glitches involving transitions */
     box-shadow: none;
     border-radius: 2px;
-    margin-bottom: 5%;
 }
 
 .panel {
@@ -265,13 +244,6 @@ footer {
     text-shadow: 0 1px 0 #fff;
 }
 
-@media (max-width: 767px) {
-	/* Expand anchors to fill available width */
-	.panel-body a {
-		display: block;
-	}
-}
-
 .panel-body a:hover {
     color: #1e91aa;
 }
@@ -279,7 +251,6 @@ footer {
 /* Carousel */
 .carousel-container {
     width: 640px;
-    margin: 0% auto;
 }
 
 .carousel-control {
@@ -309,15 +280,11 @@ footer {
 
 .carousel-caption p {
     font-weight: bold;
-    text-align: justify;
+    text-align: left;
 }
 
 .carousel-caption .action {
     margin: 50px 0;
-}
-
-ol.carousel-indicators {
-    display: none;
 }
 
 /* Pagination */
@@ -395,12 +362,6 @@ ul.pagination .active > a:hover {
 
 .top5 {
     margin-top: 5%;
-}
-
-@media (max-width: 1024px) {
-    .top4 {
-        margin: 15px 0;
-    }
 }
 
 h2.page-header {
@@ -485,56 +446,3 @@ a.highlight-link {
     color: #EDF4EA;
 }
 
-@media ( max-width : 767px) {
-	
-	/*
-	  Responsive table based on http://elvery.net/demo/responsive-tables/#no-more-tables
-	 */
-	
-	/* Force table to not be like tables anymore */
-	.table-stack table,
-	.table-stack thead,
-	.table-stack tbody,
-	.table-stack th,
-	.table-stack td,
-	.table-stack tr {
-		display: block;
-		word-wrap: break-word;
-	}
-
-	/* Hide table headers (but not display: none;, for accessibility) */
-	.table-stack thead tr {
-		position: absolute;
-		top: -9999px;
-		left: -9999px;
-	}
-	.table-stack tr {
-		border: 1px solid #ccc;
-	}
-	.table-stack td {
-		/* Behave  like a "row" */
-		border: none;
-		border-bottom: 1px solid #eee;
-		position: relative;
-		padding-left: 50% !important; /* Important for iOS */
-		text-align: left;
-		white-space: normal;
-	}
-	.table-stack td:before {
-		/* Now like a table header */
-		position: absolute;
-		/* Top/left values mimic padding */
-		top: 6px;
-		left: 6px;
-		width: 45%;
-		padding-right: 10px;
-		white-space: nowrap;
-		text-align: left;
-		font-weight: bold;
-	}
-
-	/*
-	  Label the data
-	 */
-	.table-stack td:before { content: attr(data-title); }
-}

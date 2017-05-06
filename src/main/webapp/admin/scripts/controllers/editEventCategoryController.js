@@ -1,6 +1,6 @@
 
 
-angular.module('ticketmonster').controller('EditEventCategoryController', function($scope, $routeParams, $location, flash, EventCategoryResource ) {
+angular.module('ticketmonster').controller('EditEventCategoryController', function($scope, $routeParams, $location, EventCategoryResource ) {
     var self = this;
     $scope.disabled = false;
     $scope.$location = $location;
@@ -11,7 +11,6 @@ angular.module('ticketmonster').controller('EditEventCategoryController', functi
             $scope.eventCategory = new EventCategoryResource(self.original);
         };
         var errorCallback = function() {
-            flash.setMessage({'type': 'error', 'text': 'The eventCategory could not be found.'});
             $location.path("/EventCategories");
         };
         EventCategoryResource.get({EventCategoryId:$routeParams.EventCategoryId}, successCallback, errorCallback);
@@ -23,15 +22,11 @@ angular.module('ticketmonster').controller('EditEventCategoryController', functi
 
     $scope.save = function() {
         var successCallback = function(){
-            flash.setMessage({'type':'success','text':'The eventCategory was updated successfully.'}, true);
             $scope.get();
+            $scope.displayError = false;
         };
-        var errorCallback = function(response) {
-            if(response && response.data && response.data.message) {
-                flash.setMessage({'type': 'error', 'text': response.data.message}, true);
-            } else {
-                flash.setMessage({'type': 'error', 'text': 'Something broke. Retry, or cancel and start afresh.'}, true);
-            }
+        var errorCallback = function() {
+            $scope.displayError=true;
         };
         $scope.eventCategory.$update(successCallback, errorCallback);
     };
@@ -42,15 +37,11 @@ angular.module('ticketmonster').controller('EditEventCategoryController', functi
 
     $scope.remove = function() {
         var successCallback = function() {
-            flash.setMessage({'type': 'error', 'text': 'The eventCategory was deleted.'});
             $location.path("/EventCategories");
+            $scope.displayError = false;
         };
-        var errorCallback = function(response) {
-            if(response && response.data && response.data.message) {
-                flash.setMessage({'type': 'error', 'text': response.data.message}, true);
-            } else {
-                flash.setMessage({'type': 'error', 'text': 'Something broke. Retry, or cancel and start afresh.'}, true);
-            }
+        var errorCallback = function() {
+            $scope.displayError=true;
         }; 
         $scope.eventCategory.$remove(successCallback, errorCallback);
     };

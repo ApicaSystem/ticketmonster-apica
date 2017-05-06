@@ -1,6 +1,6 @@
 
 
-angular.module('ticketmonster').controller('SearchMediaItemController', function($scope, $http, $filter, MediaItemResource ) {
+angular.module('ticketmonster').controller('SearchMediaItemController', function($scope, $http, MediaItemResource ) {
 
     $scope.search={};
     $scope.currentPage = 0;
@@ -23,8 +23,7 @@ angular.module('ticketmonster').controller('SearchMediaItemController', function
 
     $scope.performSearch = function() {
         $scope.searchResults = MediaItemResource.queryAll(function(){
-            $scope.filteredResults = $filter('searchFilter')($scope.searchResults, $scope);
-            $scope.currentPage = 0;
+            $scope.numberOfPages();
         });
     };
     

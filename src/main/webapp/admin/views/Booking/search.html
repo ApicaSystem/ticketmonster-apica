@@ -64,7 +64,7 @@
                 </tr>
             </thead>
             <tbody id="search-results-body">
-                <tr ng-repeat="result in filteredResults | startFrom:currentPage*pageSize | limitTo:pageSize">
+                <tr ng-repeat="result in searchResults | searchFilter:searchResults | startFrom:currentPage*pageSize | limitTo:pageSize">
                     <td><a href="#/Bookings/edit/{{result.id}}">{{result.totalTicketPrice}}</a></td>
                     <td><a href="#/Bookings/edit/{{result.id}}">{{result.createdOn| date:'yyyy-MM-dd HH:mm:ss Z'}}</a></td>
                     <td><a href="#/Bookings/edit/{{result.id}}">{{result.cancellationCode}}</a></td>

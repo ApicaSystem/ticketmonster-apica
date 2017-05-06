@@ -20,7 +20,7 @@
     <div class="form-group">
         <label for="performance" class="col-sm-2 control-label">Performance</label>
         <div class="col-sm-10">
-            <select id="performance" name="performance" class="form-control" ng-model="search.performance" ng-options="p as p.date for p in performanceList">
+            <select id="performance" name="performance" class="form-control" ng-model="search.performance" ng-options="p as p.displayTitle for p in performanceList">
                 <option value="">Choose a Performance</option>
             </select>
         </div>
@@ -55,7 +55,7 @@
                 </tr>
             </thead>
             <tbody id="search-results-body">
-                <tr ng-repeat="result in filteredResults | startFrom:currentPage*pageSize | limitTo:pageSize">
+                <tr ng-repeat="result in searchResults | searchFilter:searchResults | startFrom:currentPage*pageSize | limitTo:pageSize">
                     <td><a href="#/SectionAllocations/edit/{{result.id}}">{{result.occupiedCount}}</a></td>
                         <td><a href="#/SectionAllocations/edit/{{result.id}}">{{result.performance.displayTitle}}</a></td>
                         <td><a href="#/SectionAllocations/edit/{{result.id}}">{{result.section.name}}</a></td>

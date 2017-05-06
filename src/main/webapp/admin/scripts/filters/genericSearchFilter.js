@@ -26,12 +26,12 @@ angular.module('ticketmonster').filter('searchFilter', function() {
         return flag;
     }
 
-    return function(results, scope) {
+    return function(results) {
 
-        scope.filteredResults = [];
+        this.filteredResults = [];
         for (var ctr = 0; ctr < results.length; ctr++) {
             var flag = true;
-            var searchCriteria = scope.search;
+            var searchCriteria = this.search;
             var result = results[ctr];
             for (var key in searchCriteria) {
                 if (searchCriteria.hasOwnProperty(key)) {
@@ -50,10 +50,10 @@ angular.module('ticketmonster').filter('searchFilter', function() {
                 }
             }
             if (flag == true) {
-                scope.filteredResults.push(result);
+                this.filteredResults.push(result);
             }
         }
-        scope.numberOfPages();
-        return scope.filteredResults;
+        this.numberOfPages();
+        return this.filteredResults;
     };
 });

@@ -1,6 +1,6 @@
 
 
-angular.module('ticketmonster').controller('EditSectionAllocationController', function($scope, $routeParams, $location, flash, SectionAllocationResource , PerformanceResource, SectionResource) {
+angular.module('ticketmonster').controller('EditSectionAllocationController', function($scope, $routeParams, $location, SectionAllocationResource , PerformanceResource, SectionResource) {
     var self = this;
     $scope.disabled = false;
     $scope.$location = $location;
@@ -45,7 +45,6 @@ angular.module('ticketmonster').controller('EditSectionAllocationController', fu
             });
         };
         var errorCallback = function() {
-            flash.setMessage({'type': 'error', 'text': 'The sectionAllocation could not be found.'});
             $location.path("/SectionAllocations");
         };
         SectionAllocationResource.get({SectionAllocationId:$routeParams.SectionAllocationId}, successCallback, errorCallback);
@@ -57,15 +56,11 @@ angular.module('ticketmonster').controller('EditSectionAllocationController', fu
 
     $scope.save = function() {
         var successCallback = function(){
-            flash.setMessage({'type':'success','text':'The sectionAllocation was updated successfully.'}, true);
             $scope.get();
+            $scope.displayError = false;
         };
-        var errorCallback = function(response) {
-            if(response && response.data && response.data.message) {
-                flash.setMessage({'type': 'error', 'text': response.data.message}, true);
-            } else {
-                flash.setMessage({'type': 'error', 'text': 'Something broke. Retry, or cancel and start afresh.'}, true);
-            }
+        var errorCallback = function() {
+            $scope.displayError=true;
         };
         $scope.sectionAllocation.$update(successCallback, errorCallback);
     };
@@ -76,15 +71,11 @@ angular.module('ticketmonster').controller('EditSectionAllocationController', fu
 
     $scope.remove = function() {
         var successCallback = function() {
-            flash.setMessage({'type': 'error', 'text': 'The sectionAllocation was deleted.'});
             $location.path("/SectionAllocations");
+            $scope.displayError = false;
         };
-        var errorCallback = function(response) {
-            if(response && response.data && response.data.message) {
-                flash.setMessage({'type': 'error', 'text': response.data.message}, true);
-            } else {
-                flash.setMessage({'type': 'error', 'text': 'Something broke. Retry, or cancel and start afresh.'}, true);
-            }
+        var errorCallback = function() {
+            $scope.displayError=true;
         }; 
         $scope.sectionAllocation.$remove(successCallback, errorCallback);
     };

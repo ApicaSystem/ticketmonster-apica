@@ -1,6 +1,6 @@
 
 
-angular.module('ticketmonster').controller('EditShowController', function($scope, $routeParams, $location, flash, ShowResource , EventResource, PerformanceResource, VenueResource, TicketPriceResource) {
+angular.module('ticketmonster').controller('EditShowController', function($scope, $routeParams, $location, ShowResource , EventResource, PerformanceResource, VenueResource, TicketPriceResource) {
     var self = this;
     $scope.disabled = false;
     $scope.$location = $location;
@@ -87,7 +87,6 @@ angular.module('ticketmonster').controller('EditShowController', function($scope
             });
         };
         var errorCallback = function() {
-            flash.setMessage({'type': 'error', 'text': 'The show could not be found.'});
             $location.path("/Shows");
         };
         ShowResource.get({ShowId:$routeParams.ShowId}, successCallback, errorCallback);
@@ -99,15 +98,11 @@ angular.module('ticketmonster').controller('EditShowController', function($scope
 
     $scope.save = function() {
         var successCallback = function(){
-            flash.setMessage({'type':'success','text':'The show was updated successfully.'}, true);
             $scope.get();
+            $scope.displayError = false;
         };
-        var errorCallback = function(response) {
-            if(response && response.data && response.data.message) {
-                flash.setMessage({'type': 'error', 'text': response.data.message}, true);
-            } else {
-                flash.setMessage({'type': 'error', 'text': 'Something broke. Retry, or cancel and start afresh.'}, true);
-            }
+        var errorCallback = function() {
+            $scope.displayError=true;
         };
         $scope.show.$update(successCallback, errorCallback);
     };
@@ -118,15 +113,11 @@ angular.module('ticketmonster').controller('EditShowController', function($scope
 
     $scope.remove = function() {
         var successCallback = function() {
-            flash.setMessage({'type': 'error', 'text': 'The show was deleted.'});
             $location.path("/Shows");
+            $scope.displayError = false;
         };
-        var errorCallback = function(response) {
-            if(response && response.data && response.data.message) {
-                flash.setMessage({'type': 'error', 'text': response.data.message}, true);
-            } else {
-                flash.setMessage({'type': 'error', 'text': 'Something broke. Retry, or cancel and start afresh.'}, true);
-            }
+        var errorCallback = function() {
+            $scope.displayError=true;
         }; 
         $scope.show.$remove(successCallback, errorCallback);
     };

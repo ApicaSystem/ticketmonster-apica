@@ -6,39 +6,25 @@
 require.config({
     baseUrl:"resources/js",
     paths: {
-        jquery:'libs/jquery-2.1.1',
-        underscore:'libs/underscore',
+        jquery:'libs/jquery-2.0.3',
+        jquerymobile:'libs/jquery.mobile-1.4.2',
         text:'libs/text',
-        bootstrap: 'libs/bootstrap',
-        angular: 'libs/angular',
-        angularRoute: 'libs/angular-route',
-        angularResource: 'libs/angular-resource',
-        angularTouch: 'libs/angular-touch',
-        router: 'app/aggregator/mobile'
+        underscore:'libs/underscore',
+        backbone: 'libs/backbone',
+        utilities: 'app/utilities',
+        router:'app/router/mobile/router'
     },
-    // We shim Angular and Underscore.js since they don't declare AMD modules
+    // We shim Backbone.js and Underscore.js since they don't declare AMD modules
     shim: {
-        'angular': {'exports' : 'angular'},
-
-        'angularRoute': {
-            deps: ['angular']
+        'backbone': {
+            deps: ['underscore', 'jquery'],
+            exports: 'Backbone'
         },
-
-        'angularResource': {
-            deps: ['angular']
-        },
-
-        'angularTouch': {
-            deps: ['angular']
-        },
-
+        
         'underscore': {
-            exports: '_'
+        	exports: '_'
         }
-    },
-    priority: [
-        "angular"
-    ]
+    }
 });
 
 define("configuration", function() {
@@ -53,33 +39,40 @@ define("configuration", function() {
     }
 });
 
-// Now we declare all the dependencies
-// This loads and runs the 'initializer' and 'router' modules.
-require([
-        'jquery',
-        'angular',
-        'router'
-    ], function($, angular, app) {
-        // Configure jQuery to append timestamps to requests, to bypass browser caches
-        // Important for MSIE
-        $.ajaxSetup({cache:false});
-        $('head').append('<link rel="stylesheet" href="resources/css/bootstrap.css" type="text/css" media="all"/>');
-        $('head').append('<link rel="stylesheet" href="resources/css/bootstrap-theme.css" type="text/css" media="all"/>');
-        $('head').append('<link rel="stylesheet" href="resources/css/screen.css" type="text/css" media="all"/>');
-        if(!window.cordova) {
-            $('head').append('<link href="http://fonts.googleapis.com/css?family=Rokkitt" rel="stylesheet" type="text/css">');
-        }
-
-        $.ajax({
-            url:'resources/js/app/aggregator/main.html',
-            type: "GET",
-            success: function(data) {
-                $('body').append(data);
-                angular.element().ready(function() {
-                    // bootstrap the app manually
-                    angular.bootstrap(document, ['ticketMonster']);
-                });
-            }
+define("initializer", [
+    'jquery',
+    'utilities',
+    'text!../templates/mobile/main.html'
+], function ($,
+             utilities,
+             MainTemplate) {
+    // Configure jQuery to append timestamps to requests, to bypass browser caches
+    // Important for MSIE
+	$.ajaxSetup({cache:false});
+    $('head').append('<link rel="stylesheet" href="resources/css/jquery.mobile-1.4.2.css"/>');
+    $('head').append('<link rel="stylesheet" href="resources/css/m.screen.css"/>');
+    // Bind to mobileinit before loading jQueryMobile
+    $(document).bind("mobileinit", function () {
+        // Prior to creating and starting the router, we disable jQuery Mobile's own routing mechanism
+        $.mobile.hashListeningEnabled = false;
+        $.mobile.linkBindingEnabled = false;
+        $.mobile.pushStateEnabled = false;
+        
+        // Fix jQueryMobile header and footer positioning issues for iOS.
+        // See: https://github.com/jquery/jquery-mobile/issues/4113 and
+        // https://github.com/jquery/jquery-mobile/issues/5532
+        $(document).on('blur', 'input, textarea, select', function() {
+            setTimeout(function() {
+            window.scrollTo(document.body.scrollLeft, document.body.scrollTop);
+            }, 0);
         });
-    }
-);
+        
+        utilities.applyTemplate($('body'), MainTemplate);
+    });
+    // Then (load jQueryMobile and) start the router to finally start the app
+    require(['router']);
+});
+
+// Now we declare all the dependencies
+// This loads and runs the 'initializer' module.
+require(['initializer']);

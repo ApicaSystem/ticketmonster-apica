@@ -9,12 +9,11 @@ import javax.ejb.Timer;
 import javax.enterprise.event.Event;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
-import javax.ws.rs.core.MultivaluedHashMap;
-import javax.ws.rs.core.MultivaluedMap;
 
 import org.jboss.examples.ticketmonster.model.Booking;
 import org.jboss.examples.ticketmonster.rest.BookingService;
 import org.jboss.examples.ticketmonster.util.CircularBuffer;
+import org.jboss.examples.ticketmonster.util.MultivaluedHashMap;
 import org.jboss.examples.ticketmonster.util.qualifier.BotMessage;
 
 /**
@@ -76,7 +75,7 @@ public class BotService {
             stop();
             // Delete 10 bookings at a time
             while(true) {
-                MultivaluedMap<String,String> params = new MultivaluedHashMap<>();
+                MultivaluedHashMap<String,String> params = new MultivaluedHashMap<String, String>();
                 params.add("maxResults", Integer.toString(10));
                 List<Booking> bookings = bookingService.getAll(params);
                 for (Booking booking : bookings) {

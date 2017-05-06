@@ -1,6 +1,6 @@
 
 
-angular.module('ticketmonster').controller('SearchVenueController', function($scope, $http, $filter, VenueResource , MediaItemResource, SectionResource) {
+angular.module('ticketmonster').controller('SearchVenueController', function($scope, $http, VenueResource , MediaItemResource, SectionResource) {
 
     $scope.search={};
     $scope.currentPage = 0;
@@ -21,8 +21,7 @@ angular.module('ticketmonster').controller('SearchVenueController', function($sc
 
     $scope.performSearch = function() {
         $scope.searchResults = VenueResource.queryAll(function(){
-            $scope.filteredResults = $filter('searchFilter')($scope.searchResults, $scope);
-            $scope.currentPage = 0;
+            $scope.numberOfPages();
         });
     };
     

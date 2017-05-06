@@ -1,6 +1,6 @@
 
 
-angular.module('ticketmonster').controller('EditBookingController', function($scope, $routeParams, $location, flash, BookingResource , TicketResource, PerformanceResource) {
+angular.module('ticketmonster').controller('EditBookingController', function($scope, $routeParams, $location, BookingResource , TicketResource, PerformanceResource) {
     var self = this;
     $scope.disabled = false;
     $scope.$location = $location;
@@ -49,7 +49,6 @@ angular.module('ticketmonster').controller('EditBookingController', function($sc
             });
         };
         var errorCallback = function() {
-            flash.setMessage({'type': 'error', 'text': 'The booking could not be found.'});
             $location.path("/Bookings");
         };
         BookingResource.get({BookingId:$routeParams.BookingId}, successCallback, errorCallback);
@@ -61,15 +60,11 @@ angular.module('ticketmonster').controller('EditBookingController', function($sc
 
     $scope.save = function() {
         var successCallback = function(){
-            flash.setMessage({'type':'success','text':'The booking was updated successfully.'}, true);
             $scope.get();
+            $scope.displayError = false;
         };
-        var errorCallback = function(response) {
-            if(response && response.data && response.data.message) {
-                flash.setMessage({'type': 'error', 'text': response.data.message}, true);
-            } else {
-                flash.setMessage({'type': 'error', 'text': 'Something broke. Retry, or cancel and start afresh.'}, true);
-            }
+        var errorCallback = function() {
+            $scope.displayError=true;
         };
         $scope.booking.$update(successCallback, errorCallback);
     };
@@ -80,15 +75,11 @@ angular.module('ticketmonster').controller('EditBookingController', function($sc
 
     $scope.remove = function() {
         var successCallback = function() {
-            flash.setMessage({'type': 'error', 'text': 'The booking was deleted.'});
             $location.path("/Bookings");
+            $scope.displayError = false;
         };
-        var errorCallback = function(response) {
-            if(response && response.data && response.data.message) {
-                flash.setMessage({'type': 'error', 'text': response.data.message}, true);
-            } else {
-                flash.setMessage({'type': 'error', 'text': 'Something broke. Retry, or cancel and start afresh.'}, true);
-            }
+        var errorCallback = function() {
+            $scope.displayError=true;
         }; 
         $scope.booking.$remove(successCallback, errorCallback);
     };

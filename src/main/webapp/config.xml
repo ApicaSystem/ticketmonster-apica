@@ -19,7 +19,8 @@
 		assumed blocked unless set otherwise. -->
 	<access origin="http://ticketmonster-jdf.rhcloud.com" />
 	<preference name="fullscreen" value="true" />
-	<preference name="webviewbounce" value="true" />
+	<preference name="webviewbounce" value="false" />
+	<preference name="DisallowOverscroll" value="true" />
 
 	<feature name="App">
 		<param name="android-package" value="org.apache.cordova.App" />

@@ -3,6 +3,9 @@
     <h3 ng-switch-when="false">View or edit MediaItem</h3>
 </header>
 <form id="MediaItemForm" name="MediaItemForm" class="form-horizontal" role="form">
+    <div ng-show="displayError" class="alert alert-danger">
+        <strong>Error!</strong> Something broke. Retry, or cancel and start afresh.
+    </div>
     
     <div class="form-group" ng-class="{'has-error': MediaItemForm.mediaType.$invalid}">
         <label for="mediaType" class="col-sm-2 control-label">Media Type</label>

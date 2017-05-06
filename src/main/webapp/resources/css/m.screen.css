@@ -64,6 +64,13 @@ a:hover {
     margin-right: 10%;
 }
 
+/* But if there is a button on the left, offset the left margin more
+ and also increase left margin more than the right */
+.ui-header .ui-btn-left + .ui-title {
+	margin-left: 22.5%;
+	margin-right: 15%;
+}
+
 span.invalid {
    padding-left: 3px;
    color: red;
@@ -89,7 +96,6 @@ td {
 
 th {
    font-weight: normal;
-   padding: 0 10px 0 5px;
    border-bottom: #999999 dotted 1px;
 }
 

@@ -3,6 +3,9 @@
     <h3 ng-switch-when="false">View or edit EventCategory</h3>
 </header>
 <form id="EventCategoryForm" name="EventCategoryForm" class="form-horizontal" role="form">
+    <div ng-show="displayError" class="alert alert-danger">
+        <strong>Error!</strong> Something broke. Retry, or cancel and start afresh.
+    </div>
     
     <div class="form-group" ng-class="{'has-error': EventCategoryForm.description.$invalid}">
         <label for="description" class="col-sm-2 control-label">Description</label>

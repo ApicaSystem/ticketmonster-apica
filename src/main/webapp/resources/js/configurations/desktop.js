@@ -6,64 +6,44 @@
 requirejs.config({
     baseUrl: "resources/js",
     paths: {
-        jquery:'libs/jquery-2.1.1',
+        jquery:'libs/jquery-2.0.3',
         underscore:'libs/underscore',
         text:'libs/text',
         bootstrap: 'libs/bootstrap',
-        angular: 'libs/angular',
-        angularRoute: 'libs/angular-route',
-        angularResource: 'libs/angular-resource',
-        router: 'app/aggregator/desktop'
+        backbone: 'libs/backbone',
+        utilities: 'app/utilities',
+        router:'app/router/desktop/router'
     },
-    // We shim Angular and Underscore.js since they don't declare AMD modules
+    // We shim Backbone.js and Underscore.js since they don't declare AMD modules
     shim: {
-        'angular': {'exports' : 'angular'},
-
-        'angularRoute': {
-        	deps: ['angular']
+        'backbone': {
+            deps: ['jquery', 'underscore'],
+            exports: 'Backbone'
         },
-
-        'angularResource': {
-            deps: ['angular']
-        },
-
+        
         'underscore': {
-            exports: '_'
+        	exports: '_'
         }
-    },
-    priority: [
-        "angular"
-    ]
+    }
+});
+
+define("initializer", ["jquery"], function ($) {
+    // Configure jQuery to append timestamps to requests, to bypass browser caches
+    // Important for MSIE
+	$.ajaxSetup({cache:false});
+    $('head').append('<link rel="stylesheet" href="resources/css/bootstrap.css" type="text/css" media="all"/>');
+    $('head').append('<link rel="stylesheet" href="resources/css/bootstrap-theme.css" type="text/css" media="all"/>');
+    $('head').append('<link rel="stylesheet" href="resources/css/screen.css" type="text/css" media="all"/>');
+    $('head').append('<link href="http://fonts.googleapis.com/css?family=Rokkitt" rel="stylesheet" type="text/css">');
 });
 
 // Now we declare all the dependencies
 // This loads and runs the 'initializer' and 'router' modules.
 require([
-        'jquery',
-        'angular',
-        'router'
-    ], function($, angular, app) {
-        // Configure jQuery to append timestamps to requests, to bypass browser caches
-        // Important for MSIE
-        $.ajaxSetup({cache:false});
-        $('head').append('<link rel="stylesheet" href="resources/css/bootstrap.css" type="text/css" media="all"/>');
-        $('head').append('<link rel="stylesheet" href="resources/css/bootstrap-theme.css" type="text/css" media="all"/>');
-        $('head').append('<link rel="stylesheet" href="resources/css/screen.css" type="text/css" media="all"/>');
-        $('head').append('<link href="http://fonts.googleapis.com/css?family=Rokkitt" rel="stylesheet" type="text/css">');
-
-        $.ajax({
-            url:'resources/js/app/aggregator/main.html',
-            type: "GET",
-            success: function(data) {
-                $('body').append(data);
-                angular.element().ready(function() {
-                    // bootstrap the app manually
-                    angular.bootstrap(document, ['ticketMonster']);
-                });
-            }
-        });
-    }
-);
+    'initializer',
+    'router'
+], function(){
+});
 
 define("configuration", {
     baseUrl : ""
