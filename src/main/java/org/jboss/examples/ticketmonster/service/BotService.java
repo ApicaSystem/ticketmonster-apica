@@ -9,10 +9,13 @@ import javax.ejb.Timer;
 import javax.enterprise.event.Event;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.jboss.examples.ticketmonster.model.Booking;
+import org.jboss.examples.ticketmonster.model.SectionAllocation;
 import org.jboss.examples.ticketmonster.rest.BookingService;
 import org.jboss.examples.ticketmonster.util.CircularBuffer;
 import org.jboss.examples.ticketmonster.util.qualifier.BotMessage;
@@ -44,6 +47,7 @@ public class BotService {
     @Inject
     @BotMessage
     private Event<String> event;
+    private EntityManager em;
 
     private Timer timer;
 
@@ -85,10 +89,14 @@ public class BotService {
                             + booking.getContactEmail() + "\n");
                 }
                 if(bookings.size() < 1) {
-                    break;
+            	em.createQuery("DELETE FROM SectionAllocation WHERE occupiedCount != 0;", SectionAllocation.class);
+            	event.fire("Cleaned SectionAllocation");
+                break;
                 }
             }
         }
+        
+        
     }
 
     public void newBookingRequest(@Observes @BotMessage String bookingRequest) {
