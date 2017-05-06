@@ -79,15 +79,16 @@ public class BotService {
 
     public void deleteAll() {
     	
-    	Query query= em.createQuery("DELETE FROM Ticket WHERE id != 0");
-    	Query query2= em.createQuery("DELETE FROM Booking WHERE createdOn != 0");
-    	Query query3= em.createQuery("DELETE FROM SectionAllocation WHERE occupiedCount != 0");
-    	
-    	query.executeUpdate();
-    	query2.executeUpdate();
-    	query3.executeUpdate();
-    	
-    	event.fire("Deleted Bookings" + "\n");
+    	try {
+		Query query= em.createQuery("DELETE FROM Ticket WHERE id != 0");
+		Query query2= em.createQuery("DELETE FROM Booking WHERE createdOn != 0");
+		Query query3= em.createQuery("DELETE FROM SectionAllocation WHERE occupiedCount != 0");			
+		query.executeUpdate();
+		query2.executeUpdate();			
+		query3.executeUpdate();	
+		event.fire("Deleted Bookings" + "\n");
+		} catch (Exception e) {		
+	}
     }
 
     public void newBookingRequest(@Observes @BotMessage String bookingRequest) {
