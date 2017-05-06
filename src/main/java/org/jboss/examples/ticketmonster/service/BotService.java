@@ -10,12 +10,12 @@ import javax.enterprise.event.Event;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.jboss.examples.ticketmonster.model.Booking;
 import org.jboss.examples.ticketmonster.model.SectionAllocation;
+import org.jboss.examples.ticketmonster.model.Ticket;
 import org.jboss.examples.ticketmonster.rest.BookingService;
 import org.jboss.examples.ticketmonster.util.CircularBuffer;
 import org.jboss.examples.ticketmonster.util.qualifier.BotMessage;
@@ -34,6 +34,7 @@ public class BotService {
     private static final int MAX_LOG_SIZE = 50;
 
     private CircularBuffer<String> log;
+    private EntityManager em;
 
     @Inject
     private Bot bot;
@@ -47,7 +48,6 @@ public class BotService {
     @Inject
     @BotMessage
     private Event<String> event;
-    private EntityManager em;
 
     private Timer timer;
 
@@ -74,28 +74,35 @@ public class BotService {
         }
     }
 
-    @Asynchronous
     public void deleteAll() {
-        synchronized (bot) {
-            stop();
-            // Delete 10 bookings at a time
-            while(true) {
-                MultivaluedMap<String,String> params = new MultivaluedHashMap<>();
-                params.add("maxResults", Integer.toString(10));
-                List<Booking> bookings = bookingService.getAll(params);
-                for (Booking booking : bookings) {
-                    bookingService.deleteBooking(booking.getId());
-                    event.fire("Deleted booking " + booking.getId() + " for "
-                            + booking.getContactEmail() + "\n");
-                }
-                if(bookings.size() < 1) {
-            	em.createQuery("DELETE FROM SectionAllocation WHERE occupiedCount != 0;", SectionAllocation.class);
-            	event.fire("Cleaned SectionAllocation");
-                break;
-                }
-            }
-        }
-        
+//        synchronized (bot) {
+//            stop();
+//            // Delete 10 bookings at a time
+//            while(true) {
+//                MultivaluedMap<String,String> params = new MultivaluedHashMap<>();
+//                params.add("maxResults", Integer.toString(10));
+//                List<Booking> bookings = bookingService.getAll(params);
+//                for (Booking booking : bookings) {
+//                    bookingService.deleteBooking(booking.getId());
+//                    event.fire("Deleted booking " + booking.getId() + " for "
+//                            + booking.getContactEmail() + "\n");
+//                }
+//                if(bookings.size() < 1) {
+//                    break;
+//                }
+//            }
+//        }
+    	
+
+    	try {
+			em.createQuery("DELETE FROM Ticket WHERE id != 0", Ticket.class);
+			em.createQuery("DELETE FROM Booking WHERE createdOn != 0", Booking.class);
+			em.createQuery("DELETE FROM SectionAllocation WHERE occupiedCount != 0", SectionAllocation.class);
+			event.fire("Deleted Bookings");
+		} catch (Exception e) {
+			
+		}
+       
         
     }
 
