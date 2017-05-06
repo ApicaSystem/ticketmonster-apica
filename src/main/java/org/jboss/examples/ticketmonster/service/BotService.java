@@ -10,6 +10,7 @@ import javax.enterprise.event.Event;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 
@@ -30,11 +31,12 @@ import org.jboss.examples.ticketmonster.util.qualifier.BotMessage;
  */
 @Singleton
 public class BotService {
+	   @PersistenceContext(unitName = "primary")
+	   private EntityManager em;
 
     private static final int MAX_LOG_SIZE = 50;
 
     private CircularBuffer<String> log;
-    private EntityManager em;
 
     @Inject
     private Bot bot;
@@ -75,35 +77,11 @@ public class BotService {
     }
 
     public void deleteAll() {
-//        synchronized (bot) {
-//            stop();
-//            // Delete 10 bookings at a time
-//            while(true) {
-//                MultivaluedMap<String,String> params = new MultivaluedHashMap<>();
-//                params.add("maxResults", Integer.toString(10));
-//                List<Booking> bookings = bookingService.getAll(params);
-//                for (Booking booking : bookings) {
-//                    bookingService.deleteBooking(booking.getId());
-//                    event.fire("Deleted booking " + booking.getId() + " for "
-//                            + booking.getContactEmail() + "\n");
-//                }
-//                if(bookings.size() < 1) {
-//                    break;
-//                }
-//            }
-//        }
     	
-
-    	try {
-			em.createQuery("DELETE FROM Ticket WHERE id != 0", Ticket.class);
-			em.createQuery("DELETE FROM Booking WHERE createdOn != 0", Booking.class);
-			em.createQuery("DELETE FROM SectionAllocation WHERE occupiedCount != 0", SectionAllocation.class);
-			event.fire("Deleted Bookings");
-		} catch (Exception e) {
-			
-		}
-       
-        
+    	em.createQuery("delete from Ticket where id != 0", Ticket.class);
+		em.createQuery("delete from Booking where createdOn != 0", Booking.class);
+		em.createQuery("DELETE FROM SectionAllocation WHERE occupiedCount != 0", SectionAllocation.class);
+		event.fire("Deleted Bookings");
     }
 
     public void newBookingRequest(@Observes @BotMessage String bookingRequest) {
