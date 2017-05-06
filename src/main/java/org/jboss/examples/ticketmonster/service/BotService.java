@@ -11,6 +11,7 @@ import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 
@@ -78,10 +79,15 @@ public class BotService {
 
     public void deleteAll() {
     	
-    	em.createQuery("delete from Ticket where id != 0");
-		em.createQuery("delete from Booking where createdOn != 0");
-		em.createQuery("DELETE FROM SectionAllocation WHERE occupiedCount != 0");
-		event.fire("Deleted Bookings");
+    	Query query= em.createQuery("DELETE FROM Ticket WHERE id != 0");
+    	Query query2= em.createQuery("DELETE FROM Booking WHERE createdOn != 0");
+    	Query query3= em.createQuery("DELETE FROM SectionAllocation WHERE occupiedCount != 0");
+    	
+    	query.executeUpdate();
+    	query2.executeUpdate();
+    	query3.executeUpdate();
+    	
+    	event.fire("Deleted Bookings" + "\n");
     }
 
     public void newBookingRequest(@Observes @BotMessage String bookingRequest) {
