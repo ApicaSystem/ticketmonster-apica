@@ -123,7 +123,7 @@ public class BookingService extends BaseEntityService<Booking> {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createBooking(BookingRequest bookingRequest) {
         try {
-            //Thread.sleep(15000);
+            Thread.sleep(7000);
             // identify the ticket price categories in this request
             Set<Long> priceCategoryIds = bookingRequest.getUniquePriceCategoryIds();
             
