@@ -125,13 +125,8 @@ public class BookingService extends BaseEntityService<Booking> {
     public Response createBooking(BookingRequest bookingRequest) {
         try {
             
-            Random ran = new Random ();
-        	int randomNr = ran.nextInt(2);
-        	if (randomNr==1){
-            	Thread.sleep(10000);
-        	}
-            
-            
+            //Thread.sleep(10000);
+
             // identify the ticket price categories in this request
             Set<Long> priceCategoryIds = bookingRequest.getUniquePriceCategoryIds();
             
