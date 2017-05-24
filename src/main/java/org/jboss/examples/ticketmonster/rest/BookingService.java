@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.Random;
 
 import javax.ejb.Stateless;
 import javax.enterprise.event.Event;
@@ -123,7 +124,14 @@ public class BookingService extends BaseEntityService<Booking> {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createBooking(BookingRequest bookingRequest) {
         try {
-            //Thread.sleep(10000);
+            
+            Random ran = new Random ();
+        	int randomNr = ran.nextInt(5);
+        	if (randomNr==1){
+            	Thread.sleep(10000);
+        	}
+            
+            
             // identify the ticket price categories in this request
             Set<Long> priceCategoryIds = bookingRequest.getUniquePriceCategoryIds();
             
