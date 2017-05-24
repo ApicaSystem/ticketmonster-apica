@@ -126,7 +126,7 @@ public class BookingService extends BaseEntityService<Booking> {
         try {
             
             Random ran = new Random ();
-        	int randomNr = ran.nextInt(5);
+        	int randomNr = ran.nextInt(2);
         	if (randomNr==1){
             	Thread.sleep(10000);
         	}
