@@ -47,7 +47,7 @@ import org.jboss.examples.ticketmonster.util.qualifier.Created;
 @Path("/bookings")
 /**
  * <p>
- *     This is a stateless service, we declare it as an EJB for transaction demarcation
+ *     This is a stateless service, we declare it as an EJB for transaction demarcation.
  * </p>
  */
 @Stateless
