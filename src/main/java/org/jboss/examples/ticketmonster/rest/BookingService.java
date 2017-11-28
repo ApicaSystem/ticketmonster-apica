@@ -138,7 +138,7 @@ public class BookingService extends BaseEntityService<Booking> {
             Map<Long, TicketPrice> ticketPricesById = loadTicketPrices(priceCategoryIds);
 
             // Now, start to create the booking from the posted data
-            // Set the simple stuff first!
+            // Set the simple stuff first!!
             Booking booking = new Booking();
             booking.setContactEmail(bookingRequest.getEmail());
             booking.setPerformance(performance);
