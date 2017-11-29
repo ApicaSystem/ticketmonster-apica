@@ -124,8 +124,8 @@ public class BookingService extends BaseEntityService<Booking> {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createBooking(BookingRequest bookingRequest) {
         try {
-            // Add 6 second sleep in booking flow
-             Thread.sleep(7000);
+            // Add 8 second sleep in booking flow
+             //Thread.sleep(7000);
 
             // identify the ticket price categories in this request
             Set<Long> priceCategoryIds = bookingRequest.getUniquePriceCategoryIds();
