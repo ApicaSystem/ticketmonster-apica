@@ -125,7 +125,7 @@ public class BookingService extends BaseEntityService<Booking> {
     public Response createBooking(BookingRequest bookingRequest) {
         try {
             // Add 8 second sleep in booking flow
-             // Thread.sleep(8000);
+              Thread.sleep(8000);
 
             // identify the ticket price categories in this request
             Set<Long> priceCategoryIds = bookingRequest.getUniquePriceCategoryIds();
