@@ -27,6 +27,6 @@ steps:
     failOnLoopsThreshold: true
     failOnAvgPageResponseTime: true
     avgResponseTimePerPageThreshold: '5'
- Build your Java project and run tests with Apache Maven.
- Add steps that analyze code, save build artifacts, deploy, and more:
- https://docs.microsoft.com/azure/devops/pipelines/languages/java
+# Build your Java project and run tests with Apache Maven.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/java
