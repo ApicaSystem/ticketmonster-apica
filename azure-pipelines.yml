@@ -4,7 +4,7 @@ trigger:
 - azure
 
 jobs:
-- job: Maven-build
+- job: Maven
   pool:
     vmImage: 'windows-latest'
   steps:
