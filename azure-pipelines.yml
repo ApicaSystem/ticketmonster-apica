@@ -3,9 +3,10 @@
 trigger:
 - azure
 
-pool:
-  vmImage: 'ubuntu-latest'
-
+jobs:
+- job: Maven-build
+  pool:
+    vmImage: 'windows-latest'
 steps:
 - task: Maven@3
   inputs:
@@ -14,19 +15,3 @@ steps:
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.8'
     jdkArchitectureOption: 'x64'
-    publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    goals: 'package'
-
-#- task: ApicaLoadtest@2
-#  inputs:
-#    apiBaseUrl: 'https://api-ltp.apicasystem.com/v1/'
-#    apiAuthenticationToken: '4074152F-FAED-4ED5-B45F-525F809C91AF'
-#    presetName: 'UAT_Stresstest'
-#    scenarioName: 'Ticketmonster_v2.zip'
-#    failOnLoopsThreshold: true
-#    failOnAvgPageResponseTime: true
-#    avgResponseTimePerPageThreshold: '5'
-# Build your Java project and run tests with Apache Maven.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/java
