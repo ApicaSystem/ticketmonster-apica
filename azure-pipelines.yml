@@ -24,7 +24,7 @@ jobs:
       apiBaseUrl: 'https://api-ltp.apicasystem.com/v1/'
       apiAuthenticationToken: '4074152F-FAED-4ED5-B45F-525F809C91AF'
       presetName: 'UAT_Stresstest'
-      scenarioName: 'Ticketmonster_v2.zip'
+      scenarioName: 'Ticketmonster_deploy_v2.class'
       failOnLoopsThreshold: true
       failOnAvgPageResponseTime: true
       avgResponseTimePerPageThreshold: '5'
